@@ -7,26 +7,18 @@
 - requirement.txtはPythonの環境であり，バージョンなどはこちらを参考に設定する必要あり
 
 ## ディレクトリの説明
-master
-  |--Chapter03
-  |    |--code
-  |    |--data
-  |    `--output
-  |--Chapter04
-  |    |--code
-  |    |--data
-  |    `--output
-  |--Chapter05
-  |    |--code
-  |    |--data
-  |    `--output
-  |--README.md
-  `--requirement.txt
-
-  master/
-　├ bin/
-　├ etc/
-　├ usr/
-　│　└ local/
-　│　　　└ bin/
-　└ lib/
+- master
+    - Chapter03
+        - code
+        - data
+        - output
+    - Chapter04
+        - code
+        - data
+        - output
+    - Chapter05
+        - code
+        - data
+        - output
+    - README.md
+    - requirement.txt
