@@ -22,3 +22,11 @@ master
   |    `--output
   |--README.md
   `--requirement.txt
+
+  master/
+　├ bin/
+　├ etc/
+　├ usr/
+　│　└ local/
+　│　　　└ bin/
+　└ lib/
