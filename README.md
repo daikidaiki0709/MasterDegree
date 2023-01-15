@@ -1,8 +1,14 @@
 # 修士課程の研究
 
-## ディレクトリ構成
+## 概要
+- 修士論文で出力した結果や図表を出力するソースコードのまとめ
+- 各章ごとに階層を分けている
+- README.mdはこのリポジトリの説明
+- requirement.txtはPythonの環境であり，バージョンなどはこちらを参考に設定する必要あり
+
+## ディレクトリの説明
 master/
-├Chapter3
-├Chapter4
-├Chapter5
+├ Chapter3
+├ Chapter4
+├ Chapter5
 
