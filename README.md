@@ -21,4 +21,4 @@
         - data
         - output
     - README.md
-    - requirement.txt
+    - requirements.txt
