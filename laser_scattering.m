@@ -4,8 +4,7 @@ clear
 rad=400;
 
 % ここに１ピクセルに対応する実際の長さを記載
-% 以下の例では実際の長さが100mmのものの画素数が881
-
+% 以下の例では実際の長さが100mmのものの画素数が1637
 pixel_length = 1637;
 actual_length = 100;
 
@@ -17,8 +16,6 @@ ave_dark=[801.4,801.5,801.5,801.7,801.7,801.8,802.9,805.9];
 
 % 露光時間の違いを調整するための係数
 exp_coeff=[1000, 10^2.5, 10^2, 10^1.5, 10,10^0.5,1,10^(-0.5)];
-exp_coeff_img = [10^0,10^(-0.5),10^(-1.0),10^(-1.5),10^(-2.0),10^(-2.5),10^(-3.0),10^(-3.5)];
-exp_time = [10^0,10^(0.5),10^(1.0),10^(1.5),10^(2.0),10^(2.5),10^(3.0),10^(3.5)];
 
 % プロファイルのノイズ除去に使用する閾値（プロファイルがうまく描画できれば変更の必要性なし）
 CUT_MIN = 810;
@@ -36,13 +33,25 @@ for wavelength = ["633nm","850nm"]% 使う波長を選択
     for sample_num = ["01","02","03","04","05","06","07","08","09","10"]% サンプルの数（りんごの数）を格納 
         for point_num = ["1","2","3","4"]% 個体内の照射点の数
 
-            %%%%%%%%%%%%%%%%%%%% loop内のpathを完成 %%%%%%%%%%%%%%%%%%%%
+            %%%%%%%%%%%%%%%%%%%% loop内のpathを完成（ここでエラーが出なければ基本的に後ろの操作はうまくいくはず、がんばって解読して！！） %%%%%%%%%%%%%%%%%%%%
             % サンプル名（画像のファイル名）の定義
-            % サンプル名は"品種_貯蔵期間_サンプル番号_照射点番号"とする
+            % サンプル名は"貯蔵期間_サンプル番号_照射点番号"とする
+                % 貯蔵期間：4週間貯蔵なら"04"など（storage_periodで定義している）
+                % サンプル番号：個体番号（レーザー計測前に自分で割り振る）
+                % 照射点番号：個体内で複数個所計測した場合の通し番号（りんごなら1個体につき4点計測していたので、1,2,3,4と定義）
             sample_name_temp = append(storage_period,'_',sample_num,'_',point_num);
     
             % 画像が保存されているディレクトリを指定
+            % path_folderのフォルダ構造：データを格納しているフォルダ\貯蔵グループ\波長\貯蔵期間
+                % データを格納しているフォルダ：C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\image_data\
+                % 貯蔵グループ：SecondStorage（conditionで上で定義している）
+                % 波長：633nm or 850nm（wavelengthで定義している）
+                % 貯蔵期間：4週間貯蔵なら"04"など（storage_periodで定義している）
             path_folder = append("C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\image_data\",condition,"\",wavelength,"\week",storage_period);
+
+            % path_tempのフォルダ構造：画像データ一覧\貯蔵グループ\波長\貯蔵期間\貯蔵期間\個々のサンプル\8枚の画像
+                % 例. C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\image_data\SecondStorage\633nm\week00\00_01_4
+                % 最終的に各サンプルのレーザー散乱生データ（露光時間分の画像群フォルダにたどり着ければ良し！）
             path_temp = append(path_folder,"\",sample_name_temp);
     
             % path_tempをカレントディレクトリへ変更
@@ -145,28 +154,6 @@ for wavelength = ["633nm","850nm"]% 使う波長を選択
             test = [test,allintprofile_log];
             sample_name = [sample_name sample_name_temp];
 
-
-            %%%%%%%%%%%%%%%%%%%% HDR画像の保存（自作）　%%%%%%%%%%%%%%%%%%%%
-            % 各画像から対応する暗電流を除去・露光時間の逆数を乗ずる
-            imagedata_hdr = zeros(imagesizeY,imagesizeX,imagenum);
-            for i=1:imagenum
-                imagedata_hdr(:,:,i) = (imagedata(:,:,i) - ave_dark(:,i))*exp_coeff_img(:,i);
-                imagedata_hdr(:,:,i) = im2uint16(imagedata_hdr(:,:,i));
-            end
-
-            % HDR画像の作成
-            image_HDR = mean(imagedata_hdr,3);
-            
-            % 解析に使用する範囲はおおよそ、動径距離が35mmまでのため、それ用に加工する
-            image_HDR = image_HDR(:,360:1560);
-            
-            % HDR画像の保存
-            image_HDR = uint16(image_HDR);
-            % 保存するときは自分のディレクトリに変更する
-            path_hdr = append("C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\HDRimage\Original_func\",condition,"\",wavelength,"\week",storage_period,"\");
-            imwrite(image_HDR, append(path_hdr,sample_name_temp,".png"));
-
-
             %%%%%%%%%%%%%%%%%%%% HDR画像の保存（MATLABの関数）　%%%%%%%%%%%%%%%%%%%%）
             imagedata_hdr = zeros(imagesizeY,imagesizeX,imagenum);
             % 各画像から対応する暗電流を除去し、uint16に整形
@@ -182,16 +169,18 @@ for wavelength = ["633nm","850nm"]% 使う波長を選択
                 imagedata_hdr_cell{i} = imagedata_hdr(:,:,i);
                 imagedata_hdr_cell{i} = uint16(imagedata_hdr(:,:,i));
             end
-            image_HDR = makehdr(imagedata_hdr_cell,'RelativeExposure',exp_time./exp_time(1));
+            % MATLABでHDR合成できる関数がある
+                % 引数が露光時間なので、exp_coeffの逆数を渡す
+            image_HDR = makehdr(imagedata_hdr_cell,'RelativeExposure',1./exp_coeff);
             image_HDR = tonemap(image_HDR);
 
             % 解析に使用する範囲はおおよそ、動径距離が35mmまでのため、それ用に加工する
             image_HDR = image_HDR(:,360:1560);
             
             % HDR画像の保存
-            % 保存するときは自分のディレクトリに変更する
-            path_hdr = append("C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\HDRimage\MATLAB_func\",condition,"\",wavelength,"\week",storage_period,"\");
-            imwrite(image_HDR, append(path_hdr,sample_name_temp,".png"));
+                % 入力画像のパスのように自分で設計すれば任意の場所に画像を保存可能
+            % path_hdr = append("C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\HDRimage\MATLAB_func\",condition,"\",wavelength,"\week",storage_period,"\");
+            % imwrite(image_HDR, append(path_hdr,sample_name_temp,".png"));
 
             clc
 
@@ -204,8 +193,8 @@ for wavelength = ["633nm","850nm"]% 使う波長を選択
     test = [actual_distance test];
     
     % プロファイルの保存
-    % 保存するときは自分のディレクトリに変更する
-    writematrix(test,append("C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\Profile_new\Profile_",condition,"_",storage_period,"_",wavelength,".csv"))
+        % 入力画像のパスのように自分で設計すれば任意の場所にプロファイルを保存可能
+    % writematrix(test,append("C:\Users\Mito Kokawa\Documents\MATLAB\IidaDaiki\2022_apple_study\laser_data\Profile_new\Profile_",condition,"_",storage_period,"_",wavelength,".csv"))
 
     % 変数を初期化
     test = [];
