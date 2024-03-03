@@ -3,3 +3,17 @@
 
 # Pipfile, Pipfile.lockでパッケージ管理をするため
 requirements.txt
+
+# データや図表は入れない
+Chapter4/data/
+Chapter4/output/
+
+Chapter5_2/data/
+Chapter5_2/output/
+
+Chapter5_3/data/
+Chapter5_3/output/
+
+# 修論もUPloadしない
+Manuscript.docx
+修士論文.pdf
