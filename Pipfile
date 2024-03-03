@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+tqdm = "*"
+matplotlib = "*"
+japanize-matplotlib = "*"
+jupyterlab = "*"
+scipy = "*"
+opencv-python = "*"
+scikit-learn = "*"
+seaborn = "*"
+
+[dev-packages]
+ipykernel = "*"
+
+[requires]
+python_version = "3.12"
+python_full_version = "3.12.2"
