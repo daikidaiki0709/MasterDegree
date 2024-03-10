@@ -3,6 +3,7 @@
 
 # Pipfile, Pipfile.lockでパッケージ管理をするため
 requirements.txt
+.python-version
 
 # データや図表は入れない
 Chapter4/data/

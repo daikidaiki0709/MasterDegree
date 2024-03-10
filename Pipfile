@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 numpy = "*"
 pandas = "*"
+pyfeats = "*"
 tqdm = "*"
 matplotlib = "*"
 japanize-matplotlib = "*"
@@ -16,10 +17,11 @@ scikit-learn = "*"
 seaborn = "*"
 statsmodels = "*"
 openpyxl = "*"
+pydicom = "*"
 
 [dev-packages]
 ipykernel = "*"
 
 [requires]
-python_version = "3.12"
-python_full_version = "3.12.2"
+python_version = "3.10"
+python_full_version = "3.10.2"
