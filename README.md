@@ -5,7 +5,7 @@
 - 各章ごとに階層を分けている
 - laser_scattering.mは各露光時間で取得した画像を読み込み，HDR画像およびプロファイルを生成するまでのMATLABコード
 - README.mdはこのリポジトリの説明
-- requirement.txtはPythonの環境であり，バージョンなどはこちらを参考に設定する必要あり
+- Pipfileに環境の詳細が含まれているので、pipenvで環境構築構築してください
 
 ## ディレクトリの説明
 - master
@@ -23,4 +23,5 @@
         - output
     - laser_scattering.m
     - README.md
-    - requirements.txt
+    - Pipfile
+    - Pipfile.lock
