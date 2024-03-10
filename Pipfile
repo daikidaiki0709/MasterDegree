@@ -18,6 +18,8 @@ seaborn = "*"
 statsmodels = "*"
 openpyxl = "*"
 pydicom = "*"
+imblearn = "*"
+lightgbm = "*"
 
 [dev-packages]
 ipykernel = "*"
