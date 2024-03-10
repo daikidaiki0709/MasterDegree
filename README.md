@@ -10,6 +10,9 @@
 [!Warning]
 Chapter4, 5_2, 5_3の`data`と`output`は容量が大きいので、必要な人は自己紹介の連絡先に連絡してください。
 
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
 ## ディレクトリの説明
 - master
     - Chapter3
