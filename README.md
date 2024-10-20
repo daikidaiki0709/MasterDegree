@@ -2,22 +2,31 @@
 
 ## 概要
 - 修士論文で出力した結果や図表を出力するソースコードのまとめ
-- 各章ごとに階層を分けている
-- laser_scattering.mは各露光時間で取得した画像を読み込み，HDR画像およびプロファイルを生成するまでのMATLABコード
-- README.mdはこのリポジトリの説明
-- Pipfileに環境の詳細が含まれているので、pipenvで環境構築構築してください
+    - 各章ごとに階層を分けている
+    - `laser_scattering.m`は各露光時間で取得した画像を読み込み、HDR画像およびプロファイルを生成するまでのMATLABコード
+- `README.md`はこのリポジトリの説明
+- `Pipfile`に環境の詳細が含まれているので、pipenvで環境構築構築してください
+- `.gitignore`はGitでファイル管理する際に無視するファイルやディレクトリを指定したファイル
+
+> [!Note]
+> Chapter4, 5_2, 5_3の`data`と`output`は容量が大きいので、必要な人は自己紹介の連絡先に連絡してください。
 
 ## ディレクトリの説明
+```
 - master
-    - Chapter03
+    - Chapter3
         - code
         - data
         - output
-    - Chapter04
+    - Chapter4
         - code
         - data
         - output
-    - Chapter05
+    - Chapter5_2
+        - code
+        - data
+        - output
+    - Chapter5_3
         - code
         - data
         - output
@@ -25,3 +34,5 @@
     - README.md
     - Pipfile
     - Pipfile.lock
+    - .gitignore
+```
