@@ -1,9 +1,12 @@
 # Mac Environment
 .DS_Store
 
+# Python
+__pycache__
+.ipynb_checkpoints
+
 # Pipfile, Pipfile.lockでパッケージ管理をするため
 requirements.txt
-.python-version
 
 # データや図表は入れない
 Chapter4/data/
